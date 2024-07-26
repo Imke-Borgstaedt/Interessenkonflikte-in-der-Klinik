@@ -1,0 +1,93 @@
+#Data & Code: Abbildung 1
+
+df = pd.DataFrame({
+    "Beeinflussung": ["Häufig/immer selbst", "Nie selbst", "Häufig/immer Kollegen", "Nie Kollegen"],"Prozentangaben": [6, 9, 21, 2]})
+
+grouped_df = pd.DataFrame({"Beeinflussung": ["Selbst", "Selbst", "Kollegen", "Kollegen"],"Art": ["Häufig/immer", "Nie", "Häufig/immer", "Nie"],"Prozentangaben": [6, 9, 21, 2]})
+
+sns.set(style="whitegrid")
+
+plt.figure(figsize=(10, 6))
+bar_plot = sns.barplot(x="Beeinflussung", y="Prozentangaben", hue="Art", data=grouped_df, palette=["#add8e6", "#00008b"])
+
+plt.rc('font', family='Times New Roman', size=12)
+
+plt.xticks(color='black', fontfamily='Times New Roman')
+plt.yticks(color='black', fontfamily='Times New Roman')
+
+
+bar_plot.set_xlabel("Einschätzung Beeinflussung", family='Times New Roman', fontsize=12, color='black')
+bar_plot.set_ylabel("Prozentangaben", family='Times New Roman', fontsize=12, color='black')
+
+
+for p in bar_plot.patches:
+    height = p.get_height()
+    if height != 0:  
+    bar_plot.annotate(f"{height}%", (p.get_x() + p.get_width() / 2., height), ha='center', va='center', xytext=(0, 10), textcoords='offset points', fontsize=12, family='Times New Roman', color='black')
+
+
+handles, labels = bar_plot.get_legend_handles_labels()
+bar_plot.legend(handles, labels, title='Art', fontsize=12, title_fontsize=12, prop={'family': 'Times New Roman'})
+
+plt.show()
+
+#Data & Code: Abbildung 2
+
+data = {
+    'Jahr': [2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022],
+    'Erfasste Fälle von Abrechnungsbetrug im Gesundheitswesen in Deutschland': [2876, 4379, 4697, 4007, 4457, 2465, 5588, 3039, 3412, 3840, 11328, 2744]}
+
+df = pd.DataFrame(data)
+
+window_size = 3  
+df['Gleitender Durchschnitt'] = df['Erfasste Fälle von Abrechnungsbetrug im Gesundheitswesen in Deutschland'].rolling(window=window_size, min_periods=1).mean()
+
+plt.figure(figsize=(10, 6))
+plt.bar(df['Jahr'], df['Erfasste Fälle von Abrechnungsbetrug im Gesundheitswesen in Deutschland'], color='skyblue', label='Erfasste Fälle')
+plt.plot(df['Jahr'], df['Gleitender Durchschnitt'], color='red', linestyle='--', label='Einfacher gleitender Durchschnitt')
+
+for i, value in enumerate(df['Erfasste Fälle von Abrechnungsbetrug im Gesundheitswesen in Deutschland']):
+    plt.text(df['Jahr'][i], value + 100, str(value), ha='center', va='bottom', fontsize=10)  
+
+plt.xlabel('Jahr', fontsize=12,family='Times New Roman', color='black')
+plt.ylabel('Anzahl der erfassten Fälle', fontsize=12,family='Times New Roman', color='black')
+
+plt.legend()
+plt.tight_layout()
+plt.show()
+
+
+#Data & Code: Abbildung 3
+
+data = {'Berichtsjahr': ['2014/2015', '2016/2017', '2018/2019', '2020/2021'],
+    'Anzahl der verfolgten Fälle': [37014, 40090, 43644, 43792],
+    'Höhe der Forderung in Tausend Euro': [41838, 49081, 62012, 59593]}
+
+df = pd.DataFrame(data)
+
+plt.figure(figsize=(10, 6))
+bar_width = 0.35
+index = df.index
+bars1 = plt.bar(index - bar_width/2, df['Anzahl der verfolgten Fälle'], bar_width, color='lightsteelblue', label='Anzahl der verfolgten Fälle')
+bars2 = plt.bar(index + bar_width/2, df['Höhe der Forderung in Tausend Euro'], bar_width, color='steelblue', label='Höhe der Forderung in Tausend Euro')
+
+plt.plot(df['Anzahl der verfolgten Fälle'], linestyle='--', marker='o', color='red', label='Einfacher gleitender Durchschnitt')
+
+plt.xlabel('Berichtsjahr', fontsize=12,family='Times New Roman', color='black')
+plt.ylabel('Anzahl der verfolgten Fälle / Höhe der Forderung in Tausend Euro', fontsize=12, color='black')
+plt.xticks(index, df['Berichtsjahr'])
+
+plt.legend()
+
+for bar in bars1:
+    height = bar.get_height()
+    plt.text(bar.get_x() + bar.get_width()/2.0, height, '%d' % int(height), ha='center', va='bottom', fontsize=10,family='Times New Roman', color='black') 
+
+
+for bar in bars2:
+    height = bar.get_height()
+    plt.text(bar.get_x() + bar.get_width()/2.0, height, '%d' % int(height), ha='center', va='bottom', fontsize=10,family='Times New Roman', color='black') 
+plt.gca().tick_params(axis='x', colors='black')
+
+plt.tight_layout()
+plt.show()
