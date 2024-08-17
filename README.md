@@ -1,6 +1,6 @@
 # Projektbeschreibung
 
-Für die Erstellung der Abbildungen meiner Studienarbeit "Interessenkonflikte in der Klinik" habe ich Python verwendet.
+Für die Erstellung der Abbildungen meiner Hausarbeit "Interessenkonflikte in der Klinik" habe ich Python verwendet.
 
 ## Libraries
 
